@@ -1,107 +1,150 @@
-# 🧠 CNN Research Paper Reproduction & Extension – Concrete Crack Detection
 
-This repository contains our university semester project based on the reproduction and enhancement of a recent research paper on CNN-based concrete crack detection.
+# 🥔 Identification of Potato Plant Diseases using CNN
 
-## 📄 Project Description
+> **Paper Reference**: *Prabhat Srivastava et al. (2024)* – Educational Administration: Theory and Practice, [DOI: 10.53555/kuey.v30i5.5252](https://kuey.net/)
 
-The project is divided into two phases:
-
-### Phase 1: Paper Reproduction
-- 📚 **Selected Paper**: [Application of Mask R-CNN and YOLOv8 Algorithms for Concrete Crack Detection (2023)](https://doi.org/10.3390/s23135933)
-- 🎯 **Goal**: Reproduce the methodology and results from the paper.
-- 🛠️ **Approach**:
-  - Implemented both **Mask R-CNN** (via Detectron2) and **YOLOv8** (via Ultralytics).
-  - Used a publicly available crack detection dataset (or substitute, if exact dataset was unavailable).
-  - Performed inference, segmentation, and visualization on test images.
-  - Planned comparison of key metrics: mAP, IoU, inference time.
-
-### Phase 2: Contribution & Improvement *(Upcoming)*
-- 🔬 Propose a meaningful extension or improvement to the original research.
-- 🧪 Ideas in consideration:
-  - Model performance enhancement using attention modules.
-  - Hybrid architecture combining YOLOv8 speed with Mask R-CNN accuracy.
-  - Robustness evaluation on varied or noisy datasets.
-- 📊 Final report will include:
-  - Summary of original research
-  - Implementation details
-  - Proposed contribution and experimental evaluation
-  - Comparison with baseline results
+This repository contains a complete, modular, and reproducible implementation of the Convolutional Neural Network (CNN) model proposed for detecting potato leaf diseases (early blight, late blight, and healthy leaves) using image classification techniques.
 
 ---
 
-## 🧠 Research Paper Summary
+## 📑 Table of Contents
 
-- **Title**: Application of Mask R-CNN and YOLOv8 Algorithms for Concrete Crack Detection  
-- **Authors**: Syed Bilal Shah, et al.  
-- **Year**: 2023  
-- **Focus**: Evaluates Mask R-CNN vs YOLOv8 on concrete surface crack detection.  
-- **Conclusion**: YOLOv8 shows faster inference; Mask R-CNN performs better on segmentation precision.
+- [Overview](#overview)
+- [Architecture](#architecture)
+- [Dataset](#dataset)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Model Training](#model-training)
+- [Evaluation & Results](#evaluation--results)
+- [Predictions](#predictions)
+- [Visualizations](#visualizations)
+- [Citation](#citation)
 
 ---
 
-## 📁 Repository Structure
+## 🧠 Overview
+
+In this project, we apply a deep learning approach to automate the identification of potato plant diseases through image-based classification using CNNs. This can help farmers by reducing the dependency on manual inspection and enabling early disease detection.
+
+---
+
+## 🏗️ Architecture
+
+The model architecture includes:
+
+- Input Preprocessing (Resize + Rescale)
+- Data Augmentation (Flip + Rotate)
+- CNN Layers: 6× Conv2D → MaxPool → Flatten → Dense
+- Softmax classifier for 3 categories
+
+---
+
+## 📂 Dataset
+
+- Total Images: ~2,150
+- Categories:
+  - Early Blight
+  - Late Blight
+  - Healthy
+- Source: Provided in the paper; for this repo, use structured image folders.
+
+```
+/pepper-bell-dataset/
+  ├── Early_Blight/
+  ├── Late_Blight/
+  └── Healthy/
+```
+
+---
+
+## ⚙️ Installation
 
 ```bash
-📦 Concrete-Crack-Detection-CNN
-│
-├── 📓 ANN_Project.ipynb           # Jupyter notebook with full implementation (YOLOv8 and Mask R-CNN)
-├── 📄 Application_of_Mask_R-CNN...pdf   # Original research paper
-├── 📁 models/                     # (Optional) Custom model weights or configurations
-├── 📁 datasets/                   # (Optional) Sample dataset images or links
-└── README.md                     # Project documentation
-🛠️ Tech Stack
-Python 3.x
-
-Jupyter Notebook
-
-Ultralytics YOLOv8
-
-Detectron2 (Mask R-CNN)
-
-OpenCV, NumPy, Matplotlib, PyTorch
-
-🚀 Getting Started
-Clone the repository
-
-
-git clone https://github.com/your-username/concrete-crack-cnn.git
-cd concrete-crack-cnn
-Install dependencies
-
-
+git clone https://github.com/yourusername/potato-disease-cnn.git
+cd potato-disease-cnn
 pip install -r requirements.txt
-Run the notebook
-Open ANN_Project.ipynb in Jupyter Lab or Jupyter Notebook.
+```
 
-Download dataset
-Use any public dataset (e.g., SDNET2018) for testing if original is not available.
+---
 
-📊 Results Snapshot (Phase 1)
-Model	mAP@0.5	IoU	Inference Time
-YOLOv8	TBD	TBD	TBD
-Mask R-CNN	TBD	TBD	TBD
+## ▶️ Usage
 
-Note: Quantitative results will be updated after full metric evaluation.
+1. Place your dataset inside the root directory under `pepper-bell-dataset/`.
+2. Run the notebook step-by-step:
+   - `01_data_preprocessing.ipynb`
+   - `02_model_training.ipynb`
+   - `03_evaluation_and_visualization.ipynb`
 
-📌 Future Work (Phase 2 Goals)
-Add attention-based enhancements or transformer backbones.
+---
 
-Improve model efficiency via quantization or pruning.
+## 🏋️ Model Training
 
-Experiment on noisy or challenging images.
+- Image size: `256x256`
+- Batch size: `32`
+- Epochs: `15–50`
+- Optimizer: `Adam`
+- Loss: `SparseCategoricalCrossentropy`
+- Data split: `Train (80%)`, `Validation (10%)`, `Test (10%)`
 
-Finalize contribution by May 8, 2025.
+---
 
-👥 Team Members
-Student 1 –  Muhammad Muneer
+## 📊 Evaluation & Results
 
-Student 2 – Shahzaib Ali
+- **Validation Accuracy**: ~97%
+- **Test Accuracy**: ~99%
+- **Model Comparison (from paper)**:
 
+| Algorithm | Accuracy  |
+|-----------|-----------|
+| ANN       | 85%       |
+| SVM       | 88.89%    |
+| **CNN**   | **99.07%**|
 
-📄 License
-This project is for academic use only.
+---
 
-💬 Acknowledgements
-Research paper authors for their contribution.
+## 🔍 Predictions
 
-Ultralytics and Detectron2 communities for powerful frameworks.
+Use this utility to predict a single image or batch:
+
+```python
+def classify_image(model, image):
+    img_array = tf.keras.preprocessing.image.img_to_array(image)
+    img_array = tf.expand_dims(img_array, axis=0)
+    predictions = model.predict(img_array)
+    predicted_label = class_names[np.argmax(predictions[0])]
+    confidence = round(100 * np.max(predictions[0]), 2)
+    return predicted_label, confidence
+```
+
+---
+
+## 📈 Visualizations
+
+- Epoch-wise training and validation accuracy/loss
+- Prediction visualization grid
+- Confusion matrix (optional extension)
+
+---
+
+## 📜 Citation
+
+```bibtex
+@article{srivastava2024cnn,
+  title={Identification of potato plant diseases using CNN model},
+  author={Ram Kinkar Pandey, Gaurav Kumar Srivastava, Prabhat Kr. Srivastava, Chandani Sharma, Neha Chauhan},
+  journal={Educational Administration: Theory and Practice},
+  volume={30},
+  number={5},
+  pages={12656-12662},
+  year={2024},
+  doi={10.53555/kuey.v30i5.5252}
+}
+```
+
+---
+
+## 🙌 Acknowledgements
+
+Thanks to the authors of the original paper and the open-source community for tools like TensorFlow, Keras, and Matplotlib.
+
+---
