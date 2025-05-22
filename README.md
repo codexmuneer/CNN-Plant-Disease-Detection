@@ -1,9 +1,11 @@
 
-# 🥔 Identification of Potato Plant Diseases using CNN
+# Identification of Plant Diseases using CNN
 
 > **Paper Reference**: *Prabhat Srivastava et al. (2024)* – Educational Administration: Theory and Practice, [DOI: 10.53555/kuey.v30i5.5252](https://kuey.net/)
 
-This repository contains a complete, modular, and reproducible implementation of the Convolutional Neural Network (CNN) model proposed for detecting potato leaf diseases (early blight, late blight, and healthy leaves) using image classification techniques.
+This repository contains a complete, modular, and reproducible implementation of Convolutional Neural Network (CNN) models for detecting plant leaf diseases using image classification techniques.
+
+Originally based on the research paper by Prabhat Srivastava et al. for **potato plant** diseases, we extended the project to work with **pepper bell** plants and later attempted classification on **tomato plants**. During the transition to tomatoes, we discovered that the previous CNN architecture underperformed, which led us to redesign the network architecture to better suit the tomato dataset.
 
 ---
 
@@ -24,18 +26,59 @@ This repository contains a complete, modular, and reproducible implementation of
 
 ## 🧠 Overview
 
-In this project, we apply a deep learning approach to automate the identification of potato plant diseases through image-based classification using CNNs. This can help farmers by reducing the dependency on manual inspection and enabling early disease detection.
+This project leverages deep learning to automate the detection of plant diseases via image classification. Initially designed for potatoes (early blight, late blight, healthy), it was later adapted to **pepper bell** with strong results and finally evaluated on **tomato plants**. The tomato dataset did not perform well using the original CNN, so we completely revamped the architecture for this case.
 
 ---
 
 ## 🏗️ Architecture
 
-The model architecture includes:
+### 🥔 Previous CNN Architecture (for Potato & Pepper Bell):
 
-- Input Preprocessing (Resize + Rescale)
-- Data Augmentation (Flip + Rotate)
-- CNN Layers: 6× Conv2D → MaxPool → Flatten → Dense
-- Softmax classifier for 3 categories
+```python
+class CNNModel(nn.Module):
+    def __init__(self):
+        super(CNNModel, self).__init__()
+        self.conv_layers = nn.Sequential(
+            nn.Conv2d(3, 32, kernel_size=3, padding=1),
+            nn.ReLU(),
+            nn.MaxPool2d(2),
+            nn.Conv2d(32, 64, kernel_size=3, padding=1),
+            nn.ReLU(),
+            nn.MaxPool2d(2),
+            nn.Conv2d(64, 64, kernel_size=3, padding=1),
+            nn.ReLU(),
+            nn.MaxPool2d(2),
+            nn.Conv2d(64, 64, kernel_size=3, padding=1),
+            nn.ReLU(),
+            nn.MaxPool2d(2),
+            nn.Conv2d(64, 64, kernel_size=3, padding=1),
+            nn.ReLU(),
+            nn.MaxPool2d(2)
+        )
+        self.fc_layers = nn.Sequential(
+            nn.Flatten(),
+            nn.Linear(64 * IMAGE_SIZE//32 * IMAGE_SIZE//32, 64),
+            nn.ReLU(),
+            nn.Linear(64, n_classes),
+        )
+```
+
+### 🍅 Updated CNN Architecture (for Tomato):
+
+```python
+model = Sequential([
+    Conv2D(32, (3, 3), activation='relu', input_shape=(224, 224, 3)),
+    MaxPooling2D(2, 2),
+    Conv2D(64, (3, 3), activation='relu'),
+    MaxPooling2D(2, 2),
+    Conv2D(128, (3, 3), activation='relu'),
+    MaxPooling2D(2, 2),
+    Flatten(),
+    Dense(512, activation='relu'),
+    Dropout(0.5),
+    Dense(10, activation='softmax')
+])
+```
 
 ---
 
@@ -146,5 +189,3 @@ def classify_image(model, image):
 ## 🙌 Acknowledgements
 
 Thanks to the authors of the original paper and the open-source community for tools like TensorFlow, Keras, and Matplotlib.
-
----
